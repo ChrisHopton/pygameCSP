@@ -1,0 +1,117 @@
+import time
+
+import pygame
+
+# Intialize the pygame
+pygame.init()
+
+# Create the screen
+screen = pygame.display.set_mode((800, 600))
+
+# Backgroune
+background = pygame.image.load('background.jpg')
+
+# Used to manage how fast the screen updates
+clock = pygame.time.Clock()
+clock.tick(120)
+# Title and Icon
+pygame.display.set_caption("Space Invaders")
+icon = pygame.image.load('C:/Users/mathe/Desktop/Coding Projects/Pygame AP test/spaceship.png')
+pygame.display.set_icon(icon)
+
+# Player
+playerImg = pygame.image.load('ghost.png')
+playerX = 370
+playerY = 480
+playerY_change = 0
+playerX_change = 0
+
+
+def player(x, y):
+    screen.blit(playerImg, (x, y))
+
+
+# Defines which choice gets displayed.
+choices = 1
+
+# This is a font we use to draw text on the screen (size 36)
+font = pygame.font.Font(None, 30)
+
+# Game loop that keeps window open
+running = True
+while running:
+
+    timeRunning = True
+    if timeRunning == True:
+        timer = time.perf_counter()
+
+    screen.fill((0, 0, 0))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerX_change = -1
+            if event.key == pygame.K_RIGHT:
+                playerX_change = 1
+            if event.key == pygame.K_UP:  # These control movement of player
+                playerY_change = -1
+            if event.key == pygame.K_DOWN:
+                playerY_change = 1
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_change = 0
+            if event.key == event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                playerY_change = 0
+    playerY += playerY_change
+    playerX += playerX_change
+    if playerX <= 0:
+        playerX = 0
+    elif playerX >= 736:
+        playerX = 736  # Keeps player inside border of screen
+    if playerY <= 0:
+        playerY = 0
+    elif playerY >= 536:
+        playerY = 536
+        # Actual Choices Below!
+    # Decides which choice to prompt
+    if choices == 1:
+        if timer <= 5:
+            text = font.render("Oh No! You've woken up ", True, (255, 255, 255))
+            text2 = font.render("and notice your apartment is on fire! You're on the 8th floor", True, (255, 255, 255))
+            text3 = font.render("Objective: Make it out alive!", True, (255, 255, 255))
+            screen.blit(text, [270, 10])
+            screen.blit(text2, [100, 35])
+            screen.blit(text3, (270, 300))
+        elif timer >= 5:
+            text = font.render("Walk to the door to escape through there! ", True, (255, 255, 255))
+            text2 = font.render("Or, try and escape through the window!", True, (255, 255, 255))
+
+            screen.blit(text, [100, 10])
+            screen.blit(text2, [270, 35])
+
+        elif timeRunning == True:
+            print('done')  # Not working!!
+            timeRunning = False  # Should clear screen and stop printing done in console.
+
+    player(playerX, playerY)
+
+    clock.tick(250)  # FPS
+    pygame.display.flip()
+
+'''
+To do for Dylan
+
+# Watch pygame tutorial by freecode camp on youtube, watch the part on how to add back ground images and understand it.
+# Prob need to watch the first 10 min to understand the for loops in the program
+
+# Create the "Gifs" rememeber, seperate images per level, like 3 will be fine to loop thorugh then to give a gif effect.
+
+
+
+# Optional below, Lmk if you decide to do it or not:
+
+# Look up how to add gif in pygame on youtube, watch the 5 min video
+# It'll tell you how to do it on a sprite, somehow if possible, implement that into the background instead of the sprite
+
+'''
